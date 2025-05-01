@@ -1,0 +1,23 @@
+# React Todo App
+
+This is a simple Todo List app built using React and Vite.  
+It was created as part of my React learning journey.
+
+## Features
+
+- Add tasks
+- Mark tasks as completed (coming soon)
+- Delete tasks (coming soon)
+
+## Tech Stack
+
+- React
+- Vite
+- JavaScript
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
