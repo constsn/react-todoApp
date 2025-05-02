@@ -4,18 +4,15 @@ import './App.css';
 function App() {
   const [todos, setTodos] = useState([]);
 
-  // 追加
   function handleAddTodo(newTodo) {
     setTodos(prevTodos => [...prevTodos, newTodo]);
     // 状態(state: todos)を更新 ▶︎ 再レンダリング
   }
 
-  // 削除
   function handleDeleteTodo(id) {
     setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
   }
 
-  // 切替
   function handleToggleTodo(id) {
     setTodos(prevTodos =>
       prevTodos.map(todo =>
@@ -41,14 +38,14 @@ function App() {
 function TodoForm({ onAddTodo }) {
   const [text, setText] = useState('');
 
-  function handleClick() {
-    const newTodo = { text: text, id: Date.now(), isChecked: false };
-    onAddTodo(newTodo); // 配列にnewTodoオブジェクトを保存
-    setText(''); // 👇value={text} を空にする
+  function handleAddClick() {
+    const newTodo = { id: Date.now(), text: text, isChecked: false };
+    onAddTodo(newTodo);
+    setText(''); // 👇 value={text} を空にする
   }
 
   return (
-    <div>
+    <div className="todo-form">
       <input
         type="text"
         placeholder="今日のやること"
@@ -57,31 +54,73 @@ function TodoForm({ onAddTodo }) {
           setText(e.target.value); // 状態(text)更新
         }}
         onKeyDown={e => {
-          if (e.key === 'Enter') handleClick();
+          if (e.key === 'Enter') handleAddClick();
         }}
       />
-      <button onClick={handleClick}>追加</button>
+      <button onClick={handleAddClick}>追加</button>
     </div>
   );
 }
 
 // --- Todo リスト ---
 function TodoList({ todos, onDeleteTodo, onToggleTodo }) {
+  const [sortBy, setSortBy] = useState('input');
+  // <option>のvalueをstateで管理
+
+  let sortedTodos = [...todos];
+
+  if (sortBy === 'text') {
+    sortedTodos = [...todos].sort((a, b) => a.text.localeCompare(b.text));
+  } else if (sortBy === 'isChecked') {
+    sortedTodos = [...todos].sort(
+      (a, b) => Number(a.isChecked) - Number(b.isChecked)
+    );
+  }
+
+  console.log(sortedTodos);
+
   return (
-    <ul>
-      {todos.map(({ text, id, isChecked }) => {
-        if (!text.trim()) return; // 空文字ブロック
-        return (
-          <li key={id}>
-            <input type="checkbox" onChange={() => onToggleTodo(id)} />
-            <span style={isChecked ? { textDecoration: 'line-through' } : {}}>
-              {text}
-            </span>
-            <button onClick={() => onDeleteTodo(id)}>削除</button>
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      <ul className="todo-list">
+        {sortedTodos.map(todo => {
+          // 空文字ブロック
+          return (
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onDeleteTodo={onDeleteTodo}
+              onToggleTodo={onToggleTodo}
+            />
+          );
+        })}
+      </ul>
+      <TodoSort sortBy={sortBy} setSortBy={setSortBy} />
+    </>
+  );
+}
+
+function TodoItem({ todo, onDeleteTodo, onToggleTodo }) {
+  if (!todo.text.trim()) return;
+  return (
+    <li key={todo.id}>
+      <div className="text-group">
+        <input type="checkbox" onChange={() => onToggleTodo(todo.id)} />
+        <span style={todo.isChecked ? { textDecoration: 'line-through' } : {}}>
+          {todo.text}
+        </span>
+      </div>
+      <button onClick={() => onDeleteTodo(todo.id)}>削除</button>
+    </li>
+  );
+}
+
+function TodoSort({ sortBy, setSortBy }) {
+  return (
+    <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
+      <option value="input">入力順</option>
+      <option value="text">名前順</option>
+      <option value="isChecked">完了順</option>
+    </select>
   );
 }
 
