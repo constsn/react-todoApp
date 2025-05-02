@@ -6,7 +6,7 @@ It was created as part of my React learning journey.
 ## Features
 
 - Add tasks
-- Mark tasks as completed (coming soon)
+- Mark tasks as completed 
 - Delete tasks 
 
 ## Tech Stack
