@@ -5,14 +5,18 @@ function App() {
   const [todos, setTodos] = useState([]);
 
   function handleAddTodo(todo) {
-    setTodos(prev => [...prev, todo]); // 状態(state: todos)を更新
+    setTodos(prevTodos => [...prevTodos, todo]); // 状態(state: todos)を更新
+  }
+
+  function handleDeleteTodo(id) {
+    setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>Todoリスト</h1>
       <TodoForm onAddTodo={handleAddTodo} />
-      <TodoList todos={todos} />
+      <TodoList todos={todos} onDeleteTodo={handleDeleteTodo} />
     </div>
   );
 }
@@ -21,8 +25,8 @@ function TodoForm({ onAddTodo }) {
   const [text, setText] = useState('');
 
   function handleClick() {
-    const todo = { text, id: Date.now() };
-    onAddTodo(todo); // 配列にtodoオブジェクトを保存
+    const newTodo = { text, id: Date.now() };
+    onAddTodo(newTodo); // 配列にtodoオブジェクトを保存
     setText('');
   }
 
@@ -30,7 +34,7 @@ function TodoForm({ onAddTodo }) {
     <div>
       <input
         type="text"
-        placeholder="ここに入力してください"
+        placeholder="今日のやること"
         value={text}
         onChange={e => {
           setText(e.target.value);
@@ -44,12 +48,16 @@ function TodoForm({ onAddTodo }) {
   );
 }
 
-function TodoList({ todos }) {
+function TodoList({ todos, onDeleteTodo }) {
   return (
     <ul>
       {todos.map(({ text, id }) => {
         if (!text.trim()) return; // 空文字ブロック
-        return <li key={id}>{text}</li>;
+        return (
+          <li key={id}>
+            {text} <button onClick={() => onDeleteTodo(id)}>削除</button>
+          </li>
+        );
       })}
     </ul>
   );
