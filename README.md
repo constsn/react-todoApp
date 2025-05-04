@@ -7,7 +7,8 @@ It was created as part of my React learning journey.
 
 - Add tasks
 - Mark tasks as completed 
-- Delete tasks 
+- Delete tasks
+- Sort tasks
 
 ## Tech Stack
 
