@@ -65,8 +65,7 @@ select {
 .text-group input {
   transform: scale(1.4);
 }
-
-.weed {
+.btn-group {
   display: flex;
   gap: 8px;
 }
