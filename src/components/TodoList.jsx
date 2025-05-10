@@ -1,11 +1,19 @@
-import { useState } from 'react';
 import TodoItem from './TodoItem';
 import TodoSort from './TodoSort';
 
 // --- Todo リスト ---
-export default function TodoList({ todos, onDeleteTodo, onToggleTodo }) {
-  const [sortBy, setSortBy] = useState('input');
-  // <option>のvalueをstateで管理
+export default function TodoList({
+  sortedTodos,
+  editingId,
+  editText,
+  onDeleteTodo,
+  onToggleTodo,
+  onStartEdit,
+  onEditText,
+  onSaveEdit,
+}) {
+  {
+    /*const [sortBy, setSortBy] = useState('input');
   let sortedTodos = [...todos];
 
   if (sortBy === 'text') {
@@ -14,25 +22,28 @@ export default function TodoList({ todos, onDeleteTodo, onToggleTodo }) {
     sortedTodos = [...todos].sort(
       (a, b) => Number(a.isChecked) - Number(b.isChecked)
     );
+  }*/
   }
 
   return (
     <>
       <ul className="todo-list">
         {sortedTodos
-          .filter(todo => todo.text.trim())
+          .filter(todo => todo.text.trim()) // 空文字ブロック
           .map(todo => {
-            return (
-              <TodoItem
-                key={todo.id}
-                todo={todo}
-                onDeleteTodo={onDeleteTodo}
-                onToggleTodo={onToggleTodo}
-              />
-            );
+            const itemProps = {
+              editingId,
+              editText,
+              onDeleteTodo,
+              onToggleTodo,
+              onStartEdit,
+              onEditText,
+              onSaveEdit,
+            };
+            return <TodoItem key={todo.id} todo={todo} {...itemProps} />;
           })}
       </ul>
-      <TodoSort sortBy={sortBy} setSortBy={setSortBy} />
+      {/* {todos.length > 0 && <TodoSort sortBy={sortBy} setSortBy={setSortBy} />}*/}
     </>
   );
 }

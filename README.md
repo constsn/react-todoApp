@@ -6,9 +6,11 @@ It was created as part of my React learning journey.
 ## Features
 
 - Add tasks
-- Mark tasks as completed 
+- Edit tasks
+- Mark tasks as completed
 - Delete tasks
-- Sort tasks
+- Sort tasks (by input order, text, or completion)
+- Save tasks to localStorage (persistent even after reload)
 
 ## Tech Stack
 
