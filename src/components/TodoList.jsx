@@ -1,5 +1,4 @@
 import TodoItem from './TodoItem';
-import TodoSort from './TodoSort';
 
 // --- Todo リスト ---
 export default function TodoList({
@@ -12,19 +11,6 @@ export default function TodoList({
   onEditText,
   onSaveEdit,
 }) {
-  {
-    /*const [sortBy, setSortBy] = useState('input');
-  let sortedTodos = [...todos];
-
-  if (sortBy === 'text') {
-    sortedTodos = [...todos].sort((a, b) => a.text.localeCompare(b.text));
-  } else if (sortBy === 'isChecked') {
-    sortedTodos = [...todos].sort(
-      (a, b) => Number(a.isChecked) - Number(b.isChecked)
-    );
-  }*/
-  }
-
   return (
     <>
       <ul className="todo-list">
@@ -43,7 +29,6 @@ export default function TodoList({
             return <TodoItem key={todo.id} todo={todo} {...itemProps} />;
           })}
       </ul>
-      {/* {todos.length > 0 && <TodoSort sortBy={sortBy} setSortBy={setSortBy} />}*/}
     </>
   );
 }
