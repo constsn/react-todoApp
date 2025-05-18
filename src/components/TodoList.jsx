@@ -1,34 +1,23 @@
 import TodoItem from './TodoItem';
+import { TodoContext } from '../context/TodoContext';
+import { useContext } from 'react';
 
-// --- Todo リスト ---
-export default function TodoList({
-  sortedTodos,
-  editingId,
-  editText,
-  onDeleteTodo,
-  onToggleTodo,
-  onStartEdit,
-  onEditText,
-  onSaveEdit,
-}) {
+export default function TodoList() {
+  const { sortedTodos, searchText } = useContext(TodoContext);
+
   return (
-    <>
-      <ul className="todo-list">
-        {sortedTodos
-          .filter(todo => todo.text.trim()) // 空文字ブロック
-          .map(todo => {
-            const itemProps = {
-              editingId,
-              editText,
-              onDeleteTodo,
-              onToggleTodo,
-              onStartEdit,
-              onEditText,
-              onSaveEdit,
-            };
-            return <TodoItem key={todo.id} todo={todo} {...itemProps} />;
-          })}
-      </ul>
-    </>
+    <ul className="todo-list">
+      {sortedTodos.length > 0 ? (
+        sortedTodos
+          .filter(
+            todo =>
+              todo.text.trim() &&
+              todo.text.toLowerCase().includes(searchText.toLowerCase())
+          )
+          .map(todo => <TodoItem key={todo.id} todo={todo} />)
+      ) : (
+        <p>タスクが空です🈳</p>
+      )}
+    </ul>
   );
 }

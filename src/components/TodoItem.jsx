@@ -1,28 +1,32 @@
-export default function TodoItem({
-  todo,
-  editingId,
-  editText,
-  onDeleteTodo,
-  onToggleTodo,
-  onStartEdit,
-  onEditText,
-  onSaveEdit,
-}) {
+import { useContext } from 'react';
+import { TodoContext } from '../context/TodoContext';
+
+export default function TodoItem({ todo }) {
+  const {
+    editingId,
+    toggleTodo,
+    editText,
+    setEditText,
+    saveEdit,
+    startEdit,
+    deleteTodo,
+  } = useContext(TodoContext);
+
   return (
     <li key={todo.id}>
       <div className="text-group">
         <input
           type="checkbox"
-          onChange={() => onToggleTodo(todo.id)}
+          onChange={() => toggleTodo(todo.id)}
           checked={todo.isChecked}
         />
         {editingId === todo.id ? (
           <input
             type="text"
             value={editText}
-            onChange={e => onEditText(e.target.value)}
+            onChange={e => setEditText(e.target.value)}
             onKeyDown={e => {
-              if (e.key === 'Enter') onSaveEdit(todo.id);
+              if (e.key === 'Enter') saveEdit(todo.id);
             }}
           />
         ) : (
@@ -34,8 +38,8 @@ export default function TodoItem({
         )}
       </div>
       <div className="btn-group">
-        <button onClick={() => onStartEdit(todo)}>編集</button>
-        <button onClick={() => onDeleteTodo(todo.id)}>削除</button>
+        <button onClick={() => startEdit(todo)}>編集</button>
+        <button onClick={() => deleteTodo(todo.id)}>削除</button>
       </div>
     </li>
   );
