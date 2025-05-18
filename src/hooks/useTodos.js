@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { useLocalStorageState } from './useLocalStorageState';
 
 export const useTodos = () => {
+  const [todos, setTodos] = useLocalStorageState([], 'todos');
   const [sortBy, setSortBy] = useState('input');
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState('');
-  const [todos, setTodos] = useLocalStorageState([], 'todos');
+  const [searchText, setSearchText] = useState('');
 
   let sortedTodos = [...todos];
+
   if (sortBy === 'text') {
     sortedTodos = [...todos].sort((a, b) => a.text.localeCompare(b.text));
   } else if (sortBy === 'isChecked') {
@@ -16,31 +18,31 @@ export const useTodos = () => {
     );
   }
 
-  function handleAddTodo(text) {
+  const addTodo = text => {
     setTodos(prevTodos => [
       ...prevTodos,
       { id: Date.now(), text, isChecked: false },
     ]);
-  }
+  };
 
-  function handleDeleteTodo(id) {
+  const deleteTodo = id => {
     setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
-  }
+  };
 
-  function handleToggleTodo(id) {
+  const toggleTodo = id => {
     setTodos(prevTodos =>
       prevTodos.map(todo =>
         todo.id === id ? { ...todo, isChecked: !todo.isChecked } : todo
       )
     );
-  }
+  };
 
-  function handleStartEdit(todo) {
+  const startEdit = todo => {
     setEditingId(todo.id);
     setEditText(todo.text);
-  }
+  };
 
-  function handleSaveEdit(id) {
+  const saveEdit = id => {
     if (!editText.trim()) return;
     setTodos(prevTodos =>
       prevTodos.map(todo =>
@@ -49,20 +51,21 @@ export const useTodos = () => {
     );
     setEditingId(null);
     setEditText('');
-  }
+  };
 
   return {
-    todos,
     sortedTodos,
     sortBy,
     setSortBy,
     editingId,
     editText,
-    handleAddTodo,
-    handleDeleteTodo,
-    handleToggleTodo,
-    handleStartEdit,
-    handleSaveEdit,
     setEditText,
+    addTodo,
+    deleteTodo,
+    toggleTodo,
+    startEdit,
+    saveEdit,
+    searchText,
+    setSearchText,
   };
 };

@@ -1,4 +1,8 @@
-export default function TodoSort({ sortBy, setSortBy }) {
+import { useContext } from 'react';
+import { TodoContext } from '../context/TodoContext';
+
+export default function TodoSort() {
+  const { sortBy, setSortBy } = useContext(TodoContext);
   return (
     <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
       <option value="input">入力順</option>
